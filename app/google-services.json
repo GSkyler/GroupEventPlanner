@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "807834946129",
+    "firebase_url": "https://groupeventplanner-77f13.firebaseio.com",
+    "project_id": "groupeventplanner-77f13",
+    "storage_bucket": "groupeventplanner-77f13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807834946129:android:4538e56372fa43bd484670",
+        "android_client_info": {
+          "package_name": "com.example.groupeventplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807834946129-a3g7tpfu79fgpn5k7kaerfhcp1krl67j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTZ6ey46Og6F63-f8vuAxAXYxxxi_9VtE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807834946129-a3g7tpfu79fgpn5k7kaerfhcp1krl67j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
