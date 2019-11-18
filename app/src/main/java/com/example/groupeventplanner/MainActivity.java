@@ -2,32 +2,22 @@ package com.example.groupeventplanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
+import android.view.View.OnKeyListener;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.KeyEvent;
+import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -43,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView groupNameTextView;
     private ListView messageListView;
     private ArrayList<String> messages;
+    private TextView usernameTextView;
+    private EditText messageEditText;
+
+//  change to paramater passed in from prev activity
+    private String username = "TestUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +48,18 @@ public class MainActivity extends AppCompatActivity {
 
         groupNameTextView = findViewById(R.id.groupNameTextView);
         messageListView = findViewById(R.id.messageListView);
+        usernameTextView = findViewById(R.id.usernameTextView);
+        messageEditText = findViewById(R.id.messageEditText);
+        messageEditText.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
+                    updateUserMessage();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         updateGroupName();
         updateMessages();
@@ -88,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
                         if(task.isSuccessful() && task.getResult() != null) {
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Map<String, Object> data = document.getData();
-                                messages.add(data.get("name") + ": " + data.get("message"));
+                                if(!(data.get("name").equals(username))) {
+                                    messages.add(data.get("name") + ": " + data.get("message"));
+                                }
                             }
                             updateMessageListView();
                         }
@@ -99,6 +108,14 @@ public class MainActivity extends AppCompatActivity {
     public void updateMessageListView(){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, messages);
         messageListView.setAdapter(arrayAdapter);
+    }
+
+    public void updateUserMessage(){
+        String newMessage = messageEditText.getText().toString();
+
+        DocumentReference userRef = db.collection("groups").document("Example Group 1").collection("People").document("TestUser");
+        userRef.update("message", newMessage);
+
     }
 
 }
