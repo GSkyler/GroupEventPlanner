@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView groupNameTextView;
     private ListView messageListView;
     private ArrayList<String> messages;
+    private ArrayList<String> commonDates;
     private TextView usernameTextView;
     private EditText messageEditText;
+    private ListView commonDatesListView;
 
 //  change to paramater passed in from prev activity
     private String username = "TestUser";
@@ -49,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         messages = new ArrayList<>();
+        commonDates = new ArrayList<>();
 
         groupNameTextView = findViewById(R.id.groupNameTextView);
         messageListView = findViewById(R.id.messageListView);
+        commonDatesListView = findViewById(R.id.commonDatesListView);
         usernameTextView = findViewById(R.id.usernameTextView);
         messageEditText = findViewById(R.id.messageEditText);
         messageEditText.setOnKeyListener(new OnKeyListener() {
@@ -70,12 +75,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         updateMessages();
+                        updateCommonDates();
                     }
                 });
 
         updateGroupName();
         updateMessages();
-        updateMessageListView();
+        updateCommonDates();
 
     }
 
@@ -122,9 +128,49 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    public void updateCommonDates(){
+        //  change document from Example Group 1 to a document parameter passed in from previous menus
+        db.collection("groups").document("Example Group 1").collection("People")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && task.getResult() != null) {
+                            commonDates.clear();
+                            for(QueryDocumentSnapshot document: task.getResult()){
+                                Map<String, Object> data = document.getData();
+                                if(data.get("DatesAvailable") != null) {
+                                    if (commonDates.size() == 0) {
+                                        for (String date : (ArrayList<String>) data.get("DatesAvailable")){
+                                            commonDates.add(date);
+                                        }
+                                    }
+                                    else{
+                                        ArrayList<String> userDates = (ArrayList<String>) data.get("DatesAvailable");
+                                        HashSet<String> set = new HashSet<>();
+                                        set.addAll(commonDates);
+                                        set.retainAll(userDates);
+                                        commonDates.clear();
+                                        for(String date: set){
+                                            commonDates.add(date);
+                                        }
+                                    }
+                                }
+                            }
+                            updateCommonDatesListView();
+                        }
+                    }
+                });
+    }
+
     public void updateMessageListView(){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, messages);
         messageListView.setAdapter(arrayAdapter);
+    }
+
+    public void updateCommonDatesListView(){
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, commonDates);
+        commonDatesListView.setAdapter(arrayAdapter);
     }
 
     public void setUserMessage(){
