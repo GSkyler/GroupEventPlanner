@@ -1,6 +1,7 @@
 package com.example.groupeventplanner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
@@ -19,7 +20,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -54,12 +57,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
-                    updateUserMessage();
+                    setUserMessage();
                     return true;
                 }
                 return false;
             }
         });
+
+        db.collection("groups").document("Example Group 1").collection("People")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        updateMessages();
+                    }
+                });
 
         updateGroupName();
         updateMessages();
@@ -93,10 +104,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful() && task.getResult() != null) {
+                            messages.clear();
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Map<String, Object> data = document.getData();
                                 if(!(data.get("name").equals(username))) {
                                     messages.add(data.get("name") + ": " + data.get("message"));
+                                }
+                                else{
+                                    usernameTextView.setText((String)data.get("name"));
+                                    messageEditText.setText((String)data.get("message"));
                                 }
                             }
                             updateMessageListView();
@@ -110,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         messageListView.setAdapter(arrayAdapter);
     }
 
-    public void updateUserMessage(){
+    public void setUserMessage(){
         String newMessage = messageEditText.getText().toString();
 
         DocumentReference userRef = db.collection("groups").document("Example Group 1").collection("People").document("TestUser");
