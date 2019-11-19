@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateCommonDates(){
+        //                  *****HANDLE EMPTY "DATESAVAILABLE" ARRAY CASE*****
         //  change document from Example Group 1 to a document parameter passed in from previous menus
         db.collection("groups").document("Example Group 1").collection("People")
                 .get()
