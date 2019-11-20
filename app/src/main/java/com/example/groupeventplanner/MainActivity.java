@@ -11,6 +11,8 @@ import android.view.View.OnKeyListener;
 import android.view.View;
 import android.view.KeyEvent;
 import android.os.Bundle;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         messages = new ArrayList<>();
         commonDates = new ArrayList<>();
@@ -64,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
                     setUserMessage();
+                    try  {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+
+                    }
                     return true;
                 }
                 return false;
@@ -118,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                                     messages.add(data.get("name") + ": " + data.get("message"));
                                 }
                                 else{
-                                    usernameTextView.setText((String)data.get("name"));
+                                    String username = (String)data.get("name") + ":";
+                                    usernameTextView.setText(username);
                                     messageEditText.setText((String)data.get("message"));
                                 }
                             }
