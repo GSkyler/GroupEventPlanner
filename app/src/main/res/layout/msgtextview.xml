@@ -8,4 +8,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:textColor="@color/colorPrimary"
+    android:ellipsize="none"
+    android:scrollHorizontally="false"
     android:textSize="26sp" />
