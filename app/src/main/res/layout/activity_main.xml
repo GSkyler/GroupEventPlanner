@@ -96,4 +96,20 @@
         app:layout_constraintTop_toBottomOf="@+id/commonDatesTextView"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/toCalBtn"
+        android:layout_width="187dp"
+        android:layout_height="39dp"
+        android:background="@color/colorPrimary"
+        android:onClick="goToCalendar"
+        android:text="Select Dates"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintStart_toEndOf="@+id/commonDatesTextView"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
+        app:layout_constraintVertical_bias="0.042" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

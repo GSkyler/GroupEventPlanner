@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 //  change to paramater passed in from prev activity
     private String username = "TestUser";
+    private String groupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void goToCalendar(View view){
+        Intent intent = new Intent(this, CalendarActivity.class);
+//        String[] data = {username, groupName};
+//        intent.putExtra("data", data);
+        startActivity(intent);
+    }
+
     public void updateGroupName(){
         db.collection("groups").document("Example Group 1")
                 .get()
@@ -104,8 +112,9 @@ public class MainActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()){
                                 Map<String, Object> data = document.getData();
-                                String groupName = (String)data.get("name");
-                                groupNameTextView.setText(groupName);
+                                String name = (String)data.get("name");
+                                groupNameTextView.setText(name);
+                                groupName = name;
                             }
                         }
                     }
