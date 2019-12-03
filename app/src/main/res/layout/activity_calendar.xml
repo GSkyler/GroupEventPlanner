@@ -8,38 +8,40 @@
 
     <CalendarView
         android:id="@+id/Cal"
-        android:layout_width="388dp"
-        android:layout_height="419dp"
+        android:layout_width="fill_parent"
+        android:layout_height="393dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.208" />
-
-    <Button
-        android:id="@+id/BTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="Date"
-        android:text="Set Free Date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.156"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.903" />
+        app:layout_constraintVertical_bias="0.384" />
 
     <TextView
         android:id="@+id/Date"
         android:layout_width="131dp"
         android:layout_height="43dp"
+        android:layout_marginEnd="108dp"
         android:text="@string/common_google_play_services_update_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.659"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.905" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="116dp"
+        android:layout_height="46dp"
+        android:background="@color/colorPrimary"
+        android:onClick="backToMain"
+        android:text="Back"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/Cal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904" />
+        app:layout_constraintVertical_bias="0.222" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

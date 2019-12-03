@@ -14,8 +14,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CalendarActivity extends AppCompatActivity {
 
+//  CalendarView name changed to Calendar from CalendarDate
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CalendarView CalendarDate;
+    private CalendarView calendar;
     private TextView Out;
     private String Date;
     private String username = "TestUser";
@@ -24,34 +25,40 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_calendar);
         Intent intent = getIntent();
-//        String[] data = intent.getStringArrayExtra("data");
-//        if(data != null) {
-//            username = data[0];
-//            groupName = data[1];
-//        }
+        String[] data = intent.getStringArrayExtra("data");
+        if(data != null) {
+            username = data[0];
+            groupName = data[1];
+        }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        CalendarDate = findViewById(R.id.Cal);
+        calendar = findViewById(R.id.Cal);
         Out = findViewById(R.id.Date);
 
-        CalendarDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 Date = (month+1) + "/" + dayOfMonth + "/" + year;
-                Out.setText(Date);
+                updateDate();
             }
         });
     }
 
     // Adds a date Available
-    public void Date(View view){
+    public void updateDate(){
         DocumentReference userRef = db.collection("groups").document("Example Group 1").collection("People").document(username);
         userRef.update("DatesAvailable", FieldValue.arrayUnion(Date));
     }
 
+    public void backToMain(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        String[] data = {username, groupName};
+        intent.putExtra("data", data);
+        startActivity(intent);
+    }
 
 
 }

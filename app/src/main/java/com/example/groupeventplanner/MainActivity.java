@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        Intent intent = getIntent();
+        String[] data = intent.getStringArrayExtra("data");
+        if(data != null) {
+            username = data[0];
+            groupName = data[1];
+        }
 
         messages = new ArrayList<>();
         commonDates = new ArrayList<>();
@@ -96,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToCalendar(View view){
-        Intent intent = new Intent(this, CalendarActivity.class);
-//        String[] data = {username, groupName};
-//        intent.putExtra("data", data);
-        startActivity(intent);
+        Intent myintent = new Intent(this, CalendarActivity.class);
+        String[] data = {username, groupName};
+        myintent.putExtra("data", data);
+        startActivity(myintent);
     }
 
     public void updateGroupName(){
