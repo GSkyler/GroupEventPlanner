@@ -47,12 +47,19 @@ public class MainActivity extends AppCompatActivity {
 
 //  change to paramater passed in from prev activity
     private String username = "TestUser";
+    private String groupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        Intent intent = getIntent();
+        String[] data = intent.getStringArrayExtra("data");
+        if(data != null) {
+            username = data[0];
+            groupName = data[1];
+        }
 
         messages = new ArrayList<>();
         commonDates = new ArrayList<>();
@@ -94,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void goToCalendar(View view){
+        Intent myintent = new Intent(this, CalendarActivity.class);
+        String[] data = {username, groupName};
+        myintent.putExtra("data", data);
+        startActivity(myintent);
+    }
+
     public void updateGroupName(){
         db.collection("groups").document("Example Group 1")
                 .get()
@@ -102,10 +116,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
-                            if(document.exists()){
+                            if(document != null){
                                 Map<String, Object> data = document.getData();
-                                String groupName = (String)data.get("name");
-                                groupNameTextView.setText(groupName);
+                                String name = (String)data.get("name");
+                                groupNameTextView.setText(name);
+                                groupName = name;
                             }
                         }
                     }
@@ -152,19 +167,15 @@ public class MainActivity extends AppCompatActivity {
                                 Map<String, Object> data = document.getData();
                                 if(data.get("DatesAvailable") != null) {
                                     if (commonDates.size() == 0) {
-                                        for (String date : (ArrayList<String>) data.get("DatesAvailable")){
-                                            commonDates.add(date);
-                                        }
+                                        commonDates.addAll((ArrayList<String>) data.get("DatesAvailable"));
                                     }
                                     else{
                                         ArrayList<String> userDates = (ArrayList<String>) data.get("DatesAvailable");
-                                        HashSet<String> set = new HashSet<>();
-                                        set.addAll(commonDates);
+                                        HashSet<String> set = new HashSet<>(commonDates);
+                                        assert userDates != null;
                                         set.retainAll(userDates);
                                         commonDates.clear();
-                                        for(String date: set){
-                                            commonDates.add(date);
-                                        }
+                                        commonDates.addAll(set);
                                     }
                                 }
                             }
