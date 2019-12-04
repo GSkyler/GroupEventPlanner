@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
-                            if(document.exists()){
+                            if(document != null){
                                 Map<String, Object> data = document.getData();
                                 String name = (String)data.get("name");
                                 groupNameTextView.setText(name);
@@ -167,19 +167,15 @@ public class MainActivity extends AppCompatActivity {
                                 Map<String, Object> data = document.getData();
                                 if(data.get("DatesAvailable") != null) {
                                     if (commonDates.size() == 0) {
-                                        for (String date : (ArrayList<String>) data.get("DatesAvailable")){
-                                            commonDates.add(date);
-                                        }
+                                        commonDates.addAll((ArrayList<String>) data.get("DatesAvailable"));
                                     }
                                     else{
                                         ArrayList<String> userDates = (ArrayList<String>) data.get("DatesAvailable");
-                                        HashSet<String> set = new HashSet<>();
-                                        set.addAll(commonDates);
+                                        HashSet<String> set = new HashSet<>(commonDates);
+                                        assert userDates != null;
                                         set.retainAll(userDates);
                                         commonDates.clear();
-                                        for(String date: set){
-                                            commonDates.add(date);
-                                        }
+                                        commonDates.addAll(set);
                                     }
                                 }
                             }
