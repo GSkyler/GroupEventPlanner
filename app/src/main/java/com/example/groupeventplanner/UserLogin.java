@@ -115,8 +115,8 @@ public class UserLogin extends AppCompatActivity {
     }
 
     public void goToGroup(){
-        Intent myintent = new Intent(this, MainActivity.class);
-        String[] data = {username, groupName};
+        Intent myintent = new Intent(this, GroupList.class);
+        String data = username;
         myintent.putExtra("data", data);
         startActivity(myintent);
     }
