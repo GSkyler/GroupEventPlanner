@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 //  change to paramater passed in from prev activity
     private String username = "TestUser";
-    private String groupName;
+    private String groupName = "Example Group 1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db.collection("groups").document("Example Group 1").collection("People")
+        db.collection("groups").document(groupName).collection("People")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateGroupName(){
-        db.collection("groups").document("Example Group 1")
+        db.collection("groups").document(groupName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateMessages(){
 //  change document from Example Group 1 to a document parameter passed in from previous menus
-        db.collection("groups").document("Example Group 1").collection("People")
+        db.collection("groups").document(groupName).collection("People")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateCommonDates(){
         //                  *****HANDLE EMPTY "DATESAVAILABLE" ARRAY CASE*****
         //  change document from Example Group 1 to a document parameter passed in from previous menus
-        db.collection("groups").document("Example Group 1").collection("People")
+        db.collection("groups").document(groupName).collection("People")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     public void setUserMessage(){
         String newMessage = messageEditText.getText().toString();
 
-        DocumentReference userRef = db.collection("groups").document("Example Group 1").collection("People").document("TestUser");
+        DocumentReference userRef = db.collection("groups").document(groupName).collection("People").document(username);
         userRef.update("message", newMessage);
 
     }
