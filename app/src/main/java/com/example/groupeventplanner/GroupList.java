@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +24,7 @@ public class GroupList extends AppCompatActivity {
     private String username = "TestUser";
     private String groupName = "Example Group 1";
     private ListView groupsListView;
+    private ArrayList<String> groups = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +46,30 @@ public class GroupList extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     Map<String, Object> data = task.getResult().getData();
-//                    for(String group: (ArrayList<String>)data.get("groups")){
-//                    }
+                    groups.addAll((ArrayList<String>) data.get("groups"));
                 }
+                updateGroupListView();
             }
         });
     }
+
+    public void updateGroupListView(){
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, groups);
+        groupsListView.setAdapter(arrayAdapter);
+        groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                groupName = groups.get(i);
+                goToGroup();
+            }
+        });
+    }
+
+    public void goToGroup(){
+        Intent myintent = new Intent(this, MainActivity.class);
+        String[] data = {username, groupName};
+        myintent.putExtra("data", data);
+        startActivity(myintent);
+    }
+
 }

@@ -79,7 +79,7 @@ public class UserLogin extends AppCompatActivity {
                                         System.out.println("logging in");
                                         username = (String)data.get("name");
                                         foundName = true;
-                                        goToGroup();
+                                        goToGroupList();
                                     }
                                     else{
                                         System.out.println("duplicate username");
@@ -106,7 +106,7 @@ public class UserLogin extends AppCompatActivity {
                                     newUser.put("groups", Arrays.asList("Example Group 1"));
                                     System.out.println("calling addUser");
                                     addUser(newUser);
-                                    goToGroup();
+                                    goToGroupList();
                                 }
                             }
                         }
@@ -114,7 +114,7 @@ public class UserLogin extends AppCompatActivity {
                 });
     }
 
-    public void goToGroup(){
+    public void goToGroupList(){
         Intent myintent = new Intent(this, GroupList.class);
         String data = username;
         myintent.putExtra("data", data);

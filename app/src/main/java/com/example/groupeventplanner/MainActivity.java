@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView usernameTextView;
     private EditText messageEditText;
     private ListView commonDatesListView;
+    private Button backBtn;
 
 //  change to paramater passed in from prev activity
     private String username = "TestUser";
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         messages = new ArrayList<>();
         commonDates = new ArrayList<>();
 
+        backBtn = findViewById(R.id.backBtn);
         groupNameTextView = findViewById(R.id.groupNameTextView);
         messageListView = findViewById(R.id.messageListView);
         commonDatesListView = findViewById(R.id.commonDatesListView);
@@ -104,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
     public void goToCalendar(View view){
         Intent myintent = new Intent(this, CalendarActivity.class);
         String[] data = {username, groupName};
+        myintent.putExtra("data", data);
+        startActivity(myintent);
+    }
+    public void backToGroupList(View view){
+        Intent myintent = new Intent(this, GroupList.class);
+        String data = username;
         myintent.putExtra("data", data);
         startActivity(myintent);
     }
@@ -155,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateCommonDates(){
         //                  *****HANDLE EMPTY "DATESAVAILABLE" ARRAY CASE*****
-        //  change document from Example Group 1 to a document parameter passed in from previous menus
         db.collection("groups").document(groupName).collection("People")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
