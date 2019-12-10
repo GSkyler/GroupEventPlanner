@@ -3,7 +3,10 @@ package com.example.groupeventplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -28,11 +32,16 @@ public class AddEvents extends AppCompatActivity {
     private String username = "TestUser";
     private String groupName = "Example Group 1";
     private ListView commonDatesListView;
+    private EditText eventnameEditText;
+    private EditText dateEditText;
+    private EditText eventinfoEditText;
+    private EditText detailsEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addevents);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         Intent intent = getIntent();
         String[] data = intent.getStringArrayExtra("data");
         if(data != null) {
@@ -41,8 +50,23 @@ public class AddEvents extends AppCompatActivity {
         }
         commonDatesListView = findViewById(R.id.DatesList);
         commonDates = new ArrayList<>();
+        eventnameEditText  = findViewById(R.id.eventnameEditText);
+        dateEditText = findViewById(R.id.dateEditText);
+        eventinfoEditText = findViewById(R.id.eventinfoEditText);
+        detailsEditText = findViewById(R.id.detailsEditText);
+        eventnameEditText.setHint("Event Name");
+        dateEditText.setHint("Date");
+        detailsEditText.setHint("Details");
+        eventinfoEditText.setHint("Info");
         updateCommonDates();
 
+        commonDatesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String NewDate = commonDatesListView.getItemAtPosition(position).toString();
+                dateEditText.setText(NewDate);
+            }
+        });
     }
 
     public void updateCommonDates(){
@@ -90,6 +114,19 @@ public class AddEvents extends AppCompatActivity {
     }
 
     public void EventAdd(View view){
+        System.out.println("Ok we got here");
+        String EventName = eventnameEditText.getText().toString();
+        String Details = detailsEditText.getText().toString();
+        String Date = dateEditText.getText().toString();
+        String info = eventinfoEditText.getText().toString();
+        Map<String, Object> Event = new HashMap<>();
+        Event.put("name", EventName);
+        Event.put("Creator", username);
+        Event.put("Date",  Date);
+        Event.put("Details", Details);
+        Event.put("Info", info );
+        System.out.println("OK man we still going strong");
+        db.collection("groups").document(groupName).collection("Events").document(EventName).set(Event);
         System.out.println("asdsdfsdf");
     }
 
