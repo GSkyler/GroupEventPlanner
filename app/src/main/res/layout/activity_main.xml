@@ -19,10 +19,67 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/commonDatesTextView"
+        android:layout_width="186dp"
+        android:layout_height="38dp"
+        android:text="Common Dates:"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
+        app:layout_constraintVertical_bias="0.077" />
+
+    <Button
+        android:id="@+id/toCalBtn2"
+        android:layout_width="187dp"
+        android:layout_height="39dp"
+        android:background="@color/colorPrimary"
+        android:onClick="goToCalendar"
+        android:text="Select Dates"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toEndOf="@+id/commonDatesTextView"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <Button
+        android:id="@+id/toCalBtn"
+        android:layout_width="187dp"
+        android:layout_height="39dp"
+        android:background="@color/colorPrimary"
+        android:onClick="goToCalendar"
+        android:text="Select Dates"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toEndOf="@+id/commonDatesTextView"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <ListView
+        android:id="@+id/commonDatesListView"
+        android:layout_width="186dp"
+        android:layout_height="228dp"
+        app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/commonDatesTextView"
+        app:layout_constraintTop_toBottomOf="@+id/commonDatesTextView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ListView
         android:id="@+id/messageListView"
@@ -71,45 +128,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.977" />
 
-    <TextView
-        android:id="@+id/commonDatesTextView"
-        android:layout_width="186dp"
-        android:layout_height="38dp"
-        android:text="Common Dates:"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.068" />
-
-    <ListView
-        android:id="@+id/commonDatesListView"
-        android:layout_width="186dp"
-        android:layout_height="228dp"
-        app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/commonDatesTextView"
-        app:layout_constraintTop_toBottomOf="@+id/commonDatesTextView"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
-        android:id="@+id/toCalBtn"
-        android:layout_width="187dp"
-        android:layout_height="39dp"
-        android:background="@color/colorPrimary"
-        android:onClick="goToCalendar"
-        android:text="Select Dates"
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:onClick="backToGroupList"
+        android:text="Back"
         android:textColor="@android:color/white"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/groupNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.41"
-        app:layout_constraintStart_toEndOf="@+id/commonDatesTextView"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
