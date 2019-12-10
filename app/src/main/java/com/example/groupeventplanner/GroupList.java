@@ -72,4 +72,9 @@ public class GroupList extends AppCompatActivity {
         startActivity(myintent);
     }
 
+    public void goToSignIn(View view){
+        Intent intent = new Intent(this, UserLogin.class);
+        startActivity(intent);
+    }
+
 }
