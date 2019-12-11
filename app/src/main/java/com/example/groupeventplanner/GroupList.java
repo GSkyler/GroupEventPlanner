@@ -53,6 +53,13 @@ public class GroupList extends AppCompatActivity {
         });
     }
 
+    public void goToCreateGroup(View view){
+        Intent intent = new Intent(this, CreateGroup.class);
+        String data = username;
+        intent.putExtra("data", data);
+        startActivity(intent);
+    }
+
     public void updateGroupListView(){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, groups);
         groupsListView.setAdapter(arrayAdapter);
