@@ -19,9 +19,9 @@
 
     <Button
         android:id="@+id/backBtn"
-        android:layout_width="116dp"
-        android:layout_height="46dp"
-        android:background="@color/colorPrimary"
+        android:layout_width="110dp"
+        android:layout_height="43dp"
+        android:background="@color/colorPrimaryDark"
         android:onClick="backToMain"
         android:text="Back"
         android:textColor="@android:color/white"

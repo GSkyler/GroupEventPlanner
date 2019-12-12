@@ -55,7 +55,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     // Adds a date Available
     public void updateDate(){
-        final DocumentReference userRef = db.collection("groups").document("Example Group 1").collection("People").document(username);
+        final DocumentReference userRef = db.collection("groups").document(groupName).collection("People").document(username);
         userRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
