@@ -79,6 +79,13 @@ public class GroupList extends AppCompatActivity {
         startActivity(myintent);
     }
 
+    public void goToJoinGroup(View view){
+        Intent myintent = new Intent(this, JoinGroup.class);
+        String data = username;
+        myintent.putExtra("data", data);
+        startActivity(myintent);
+    }
+
     public void goToSignIn(View view){
         Intent intent = new Intent(this, UserLogin.class);
         startActivity(intent);
