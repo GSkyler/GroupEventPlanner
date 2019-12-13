@@ -65,7 +65,7 @@ public class CreateGroup extends AppCompatActivity {
     }
 
     public void createGroup(final String groupName){
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/ddy/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         String date = sdf.format(new Date());
         System.out.println(date);
         Map<String, Object> newGroup = new HashMap<>();
