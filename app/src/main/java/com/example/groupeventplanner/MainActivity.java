@@ -1,20 +1,21 @@
 package com.example.groupeventplanner;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.view.View.OnKeyListener;
-import android.view.View;
-import android.view.KeyEvent;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +28,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private ListView messageListView;
     private ArrayList<String> messages;
     private ArrayList<String> test;
-    private ArrayList<String> commonDates;
     private TextView usernameTextView;
     private EditText messageEditText;
     private ListView commonDatesListView;
@@ -54,13 +53,12 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         Intent intent = getIntent();
         String[] data = intent.getStringArrayExtra("data");
-//        if(data != null) {
-//            username = data[0];
-//            groupName = data[1];
-//        }
+        if(data != null) {
+            username = data[0];
+            groupName = data[1];
+        }
 
         messages = new ArrayList<>();
-        commonDates = new ArrayList<>();
         test = new ArrayList<>();
 
         groupNameTextView = findViewById(R.id.groupNameTextView);
@@ -71,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         messageEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
                     setUserMessage();
                     try  {
@@ -97,8 +96,19 @@ public class MainActivity extends AppCompatActivity {
         updateGroupName();
         updateMessages();
         updateEvents();
+        evtDetails();
         //updateCommonDates();
 
+    }
+
+    public void evtDetails(){
+        commonDatesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String Name = commonDatesListView.getItemAtPosition(position).toString();
+                goToEventDetails(Name.substring(Name.indexOf(":") + 2));
+            }
+        });
     }
 
     public void goToCalendar(View view){
@@ -111,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
     public void goToEventCreator(View view){
         Intent myintent = new Intent(this, AddEvents.class);
         String[] data = {username, groupName};
+        myintent.putExtra("data", data);
+        startActivity(myintent);
+    }
+
+    public void goToEventDetails(String nameIn){
+        Intent myintent = new Intent(this, EventDetails.class);
+        String[] data = {username, groupName, nameIn};
         myintent.putExtra("data", data);
         startActivity(myintent);
     }

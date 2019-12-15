@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +55,7 @@ public class AddEvents extends AppCompatActivity {
         eventnameEditText.setHint("Event Name");
         dateEditText.setHint("Date");
         detailsEditText.setHint("Details");
-        eventinfoEditText.setHint("Info");
+        eventinfoEditText.setHint("Description");
         updateCommonDates();
 
         commonDatesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,34 +70,31 @@ public class AddEvents extends AppCompatActivity {
     public void updateCommonDates(){
         //                  *****HANDLE EMPTY "DATESAVAILABLE" ARRAY CASE*****
         //  change document from Example Group 1 to a document parameter passed in from previous menus
-        db.collection("groups").document("Example Group 1").collection("People")
+        db.collection("groups").document(groupName).collection("People")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful() && task.getResult() != null) {
                             commonDates.clear();
+                            boolean firsttime = true;
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Map<String, Object> data = document.getData();
                                 if(data.get("DatesAvailable") != null) {
-                                    if (commonDates.size() == 0) {
-                                        for (String date : (ArrayList<String>) data.get("DatesAvailable")){
-                                            commonDates.add(date);
-                                        }
+                                    if (firsttime) {
+                                        commonDates.addAll((ArrayList<String>) data.get("DatesAvailable"));
                                     }
                                     else{
                                         ArrayList<String> userDates = (ArrayList<String>) data.get("DatesAvailable");
-                                        HashSet<String> set = new HashSet<>();
-                                        set.addAll(commonDates);
+                                        HashSet<String> set = new HashSet<>(commonDates);
+                                        assert userDates != null;
                                         set.retainAll(userDates);
                                         commonDates.clear();
-                                        for(String date: set){
-                                            commonDates.add(date);
-                                        }
+                                        commonDates.addAll(set);
                                     }
+                                    if (firsttime) firsttime = !firsttime;
                                 }
                             }
-
                         }
                     }
                 });
@@ -108,7 +103,7 @@ public class AddEvents extends AppCompatActivity {
 
     public void backToMain(View view){
         Intent intent = new Intent(this, MainActivity.class);
-        String[] data = {};
+        String[] data = {username, groupName};
         intent.putExtra("data", data);
         startActivity(intent);
     }
@@ -118,22 +113,24 @@ public class AddEvents extends AppCompatActivity {
         String EventName = eventnameEditText.getText().toString();
         String Details = detailsEditText.getText().toString();
         String Date = dateEditText.getText().toString();
-        String info = eventinfoEditText.getText().toString();
-        Map<String, Object> Event = new HashMap<>();
-        Event.put("name", EventName);
-        Event.put("Creator", username);
-        Event.put("Date",  Date);
-        Event.put("Details", Details);
-        Event.put("Info", info );
-        System.out.println("OK man we still going strong");
-        db.collection("groups").document(groupName).collection("Events").document(EventName).set(Event);
-        System.out.println("asdsdfsdf");
+        String Description = eventinfoEditText.getText().toString();
+        if(eventinfoEditText.equals("") || detailsEditText.equals("") || dateEditText.equals("") || eventnameEditText.equals("")){
+            Map<String, Object> Event = new HashMap<>();
+            Event.put("name", EventName);
+            Event.put("Creator", username);
+            Event.put("Date",  Date);
+            Event.put("Details", Details);
+            Event.put("Description", Description );
+            System.out.println("OK man we still going strong");
+            db.collection("groups").document(groupName).collection("Events").document(EventName).set(Event);
+            System.out.println("asdsdfsdf");
+        }
+
     }
 
     public void updateCommonDatesListView(){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, commonDates);
         commonDatesListView.setAdapter(arrayAdapter);
-        System.out.println("Done!!!!");
     }
 
 }
