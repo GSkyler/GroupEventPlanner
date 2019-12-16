@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,7 +104,7 @@ public class UserLogin extends AppCompatActivity {
                                     Map<String, Object> newUser = new HashMap<>();
                                     newUser.put("name", name);
                                     newUser.put("id", 77777);
-                                    newUser.put("groups", Arrays.asList("Example Group 1"));
+                                    newUser.put("groups", Collections.emptyList());
                                     System.out.println("calling addUser");
                                     addUser(newUser);
                                     goToGroupList();

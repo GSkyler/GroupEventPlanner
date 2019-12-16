@@ -38,20 +38,6 @@
         app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
         app:layout_constraintVertical_bias="0.077" />
 
-    <Button
-        android:id="@+id/toCalBtn2"
-        android:layout_width="187dp"
-        android:layout_height="39dp"
-        android:background="@color/colorPrimary"
-        android:onClick="goToCalendar"
-        android:text="Select Dates"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.045" />
-
     <ListView
         android:id="@+id/commonDatesListView"
         android:layout_width="186dp"
@@ -104,7 +90,7 @@
         android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/messageListView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/usernameTextView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.985" />

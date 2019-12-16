@@ -114,7 +114,7 @@ public class AddEvents extends AppCompatActivity {
         String Details = detailsEditText.getText().toString();
         String Date = dateEditText.getText().toString();
         String Description = eventinfoEditText.getText().toString();
-        if(eventinfoEditText.equals("") || detailsEditText.equals("") || dateEditText.equals("") || eventnameEditText.equals("")){
+        if(!eventinfoEditText.equals("") && !detailsEditText.equals("") && !dateEditText.equals("") && !eventnameEditText.equals("")){
             Map<String, Object> Event = new HashMap<>();
             Event.put("name", EventName);
             Event.put("Creator", username);

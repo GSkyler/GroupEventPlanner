@@ -65,11 +65,6 @@ public class JoinGroup extends AppCompatActivity {
     }
 
     public void joinGroup(final String groupName){
-        final Map<String, Object> user = new HashMap<>();
-        user.put("name", username);
-        user.put("DatesAvailable", Collections.emptyList());
-        user.put("message", "Hello!");
-
         final DocumentReference groupRef = db.collection("groups").document(groupName);
         groupRef.get()
         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -77,7 +72,7 @@ public class JoinGroup extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     if(task.getResult().exists()){
-                        groupRef.collection("People").add(user);
+                        addUserToGroup(groupName);
                         db.collection("users").document(username).update("groups", FieldValue.arrayUnion(groupName));
                         goToMainActivity(groupName);
                     }
@@ -88,6 +83,15 @@ public class JoinGroup extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void addUserToGroup(String groupName){
+        final Map<String, Object> user = new HashMap<>();
+        user.put("name", username);
+        user.put("DatesAvailable", Collections.emptyList());
+        user.put("message", "Hello!");
+
+        db.collection("groups").document(groupName).collection("People").document(username).set(user);
     }
 
     public void goToMainActivity(String groupName){
