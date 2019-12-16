@@ -28,7 +28,7 @@
         android:id="@+id/commonDatesTextView"
         android:layout_width="186dp"
         android:layout_height="38dp"
-        android:text="Common Dates:"
+        android:text="Events:"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/usernameTextView"

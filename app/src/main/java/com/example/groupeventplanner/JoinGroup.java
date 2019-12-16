@@ -101,4 +101,11 @@ public class JoinGroup extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void backToGroupList(View view){
+        Intent intent = new Intent(this, GroupList.class);
+        String data = username;
+        intent.putExtra("data", data);
+        startActivity(intent);
+    }
+
 }

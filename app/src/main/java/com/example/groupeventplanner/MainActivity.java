@@ -95,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
                         //updateCommonDates();
                     }
                 });
+        db.collection("groups").document(groupName).collection("Events")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        updateEvents();
+                    }
+                });
 
         updateGroupName();
         updateMessages();

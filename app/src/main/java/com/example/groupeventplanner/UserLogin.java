@@ -56,10 +56,14 @@ public class UserLogin extends AppCompatActivity {
     }
 
     public void signIn(View view){
-        checkUsernameDatabase(usernameEditText.getText().toString(), true);
+        if(!usernameEditText.getText().toString().equals("")){
+            checkUsernameDatabase(usernameEditText.getText().toString(), true);
+        }
     }
     public void register(View view){
-        checkUsernameDatabase(usernameEditText.getText().toString(), false);
+        if(!usernameEditText.getText().toString().equals("")){
+            checkUsernameDatabase(usernameEditText.getText().toString(), false);
+        }
     }
 
     public void checkUsernameDatabase(final String name, final boolean signIn){
