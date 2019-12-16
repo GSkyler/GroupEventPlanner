@@ -78,7 +78,7 @@ public class CreateGroup extends AppCompatActivity {
         event.put("Creator", username);
         event.put("Date", date);
         event.put("Details", "Group made");
-        event.put("Info", "Group was created");
+        event.put("Description", "Group was created");
         event.put("name", "Group Created");
         db.collection("groups").document((String)newGroup.get("name")).set(newGroup);
         db.collection("groups").document((String)newGroup.get("name")).collection("Events").document("Group Created").set(event);
