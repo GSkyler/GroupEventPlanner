@@ -83,20 +83,21 @@
 
     <ListView
         android:id="@+id/messageListView"
-        android:layout_width="fill_parent"
-        android:layout_height="159dp"
+        android:layout_width="394dp"
+        android:layout_height="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/usernameTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.802" />
+        app:layout_constraintVertical_bias="0.972" />
 
     <TextView
         android:id="@+id/usernameTextView"
         android:layout_width="122dp"
         android:layout_height="35dp"
         android:layout_marginStart="5dp"
+        android:layout_marginBottom="12dp"
         android:text="Username"
         android:textAlignment="textStart"
         android:textColor="@color/colorPrimaryDark"
@@ -106,12 +107,12 @@
         app:layout_constraintHorizontal_bias="0.038"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.985" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/messageEditText"
-        android:layout_width="225dp"
-        android:layout_height="35dp"
+        android:layout_width="282dp"
+        android:layout_height="31dp"
         android:background="@null"
         android:ellipsize="none"
         android:ems="10"
@@ -122,43 +123,10 @@
         android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/messageListView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/usernameTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.985" />
-
-    <TextView
-        android:id="@+id/commonDatesTextView"
-        android:layout_width="186dp"
-        android:layout_height="38dp"
-        android:text="Common Dates:"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.068" />
-
-    <ListView
-        android:id="@+id/commonDatesListView"
-        android:layout_width="357dp"
-        android:layout_height="156dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/commonDatesTextView"
-        app:layout_constraintTop_toBottomOf="@+id/commonDatesTextView"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/toCalBtn"
-        android:layout_width="138dp"
-        android:layout_height="70dp"
-        android:background="@color/colorPrimary"
-        android:onClick="goToCalendar"
-        android:text="Add Free Date"
+        app:layout_constraintVertical_bias="0.977" />
 
     <Button
         android:id="@+id/backBtn"
@@ -171,25 +139,9 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/groupNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.955" />
-
-    <Button
-        android:id="@+id/toEvtBtn2"
-        android:layout_width="141dp"
-        android:layout_height="72dp"
-        android:background="@color/colorPrimary"
-        android:onClick="goToEventCreator"
-        android:text="Add New Event"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.955" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
