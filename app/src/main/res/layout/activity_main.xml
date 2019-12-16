@@ -49,24 +49,6 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toEndOf="@+id/commonDatesTextView"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.045" />
-
-    <Button
-        android:id="@+id/toCalBtn"
-        android:layout_width="187dp"
-        android:layout_height="39dp"
-        android:background="@color/colorPrimary"
-        android:onClick="goToCalendar"
-        android:text="Select Dates"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toEndOf="@+id/commonDatesTextView"
         app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
         app:layout_constraintVertical_bias="0.045" />
 
@@ -76,10 +58,10 @@
         android:layout_height="228dp"
         app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/commonDatesTextView"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commonDatesTextView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.583" />
 
     <ListView
         android:id="@+id/messageListView"
@@ -127,31 +109,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.985" />
 
-    <TextView
-        android:id="@+id/commonDatesTextView"
-        android:layout_width="186dp"
-        android:layout_height="38dp"
-        android:text="Common Dates:"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/usernameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.068" />
-
-    <ListView
-        android:id="@+id/commonDatesListView"
-        android:layout_width="357dp"
-        android:layout_height="156dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/commonDatesTextView"
-        app:layout_constraintTop_toBottomOf="@+id/commonDatesTextView"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/toCalBtn"
         android:layout_width="138dp"
@@ -159,6 +116,14 @@
         android:background="@color/colorPrimary"
         android:onClick="goToCalendar"
         android:text="Add Free Date"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/toEvtBtn2"
+        app:layout_constraintHorizontal_bias="0.158"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messageListView"
+        app:layout_constraintVertical_bias="0.511" />
 
     <Button
         android:id="@+id/backBtn"
@@ -171,10 +136,10 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/groupNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.955" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
 
     <Button
         android:id="@+id/toEvtBtn2"
@@ -187,9 +152,9 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.907"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupNameTextView"
-        app:layout_constraintVertical_bias="0.955" />
+        app:layout_constraintVertical_bias="0.961" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
