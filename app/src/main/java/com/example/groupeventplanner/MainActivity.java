@@ -1,24 +1,26 @@
 package com.example.groupeventplanner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
+import android.graphics.Color;
 import android.view.View.OnKeyListener;
+import android.view.View;
+import android.view.KeyEvent;
+import android.os.Bundle;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView groupNameTextView;
     private ListView messageListView;
     private ArrayList<String> messages;
-    private ArrayList<String> test;
+    private ArrayList<String> commonDates;
     private TextView usernameTextView;
     private EditText messageEditText;
     private ListView commonDatesListView;
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         messages = new ArrayList<>();
-        test = new ArrayList<>();
+        commonDates = new ArrayList<>();
 
         backBtn = findViewById(R.id.backBtn);
         groupNameTextView = findViewById(R.id.groupNameTextView);
@@ -72,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         messageEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER){
                     setUserMessage();
                     try  {
@@ -92,26 +94,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         updateMessages();
-                        //updateCommonDates();
+                        updateCommonDates();
                     }
                 });
 
         updateGroupName();
         updateMessages();
-        updateEvents();
-        evtDetails();
-        //updateCommonDates();
+        updateCommonDates();
 
-    }
-
-    public void evtDetails(){
-        commonDatesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String Name = commonDatesListView.getItemAtPosition(position).toString();
-                goToEventDetails(Name.substring(Name.indexOf(":") + 2));
-            }
-        });
     }
 
     public void goToCalendar(View view){
@@ -127,21 +117,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myintent);
     }
 
-    public void goToEventCreator(View view){
-        Intent myintent = new Intent(this, AddEvents.class);
-        String[] data = {username, groupName};
-        myintent.putExtra("data", data);
-        startActivity(myintent);
-    }
-
-    public void goToEventDetails(String nameIn){
-        Intent myintent = new Intent(this, EventDetails.class);
-        String[] data = {username, groupName, nameIn};
-        myintent.putExtra("data", data);
-        startActivity(myintent);
-    }
-
-
     public void updateGroupName(){
         db.collection("groups").document(groupName)
                 .get()
@@ -150,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
-                            if(document.exists()){
+                            if(document != null){
                                 Map<String, Object> data = document.getData();
                                 String name = (String)data.get("name");
                                 groupNameTextView.setText(name);
@@ -182,68 +157,41 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                             updateMessageListView();
-
                         }
                     }
                 });
     }
 
-    public void updateEvents(){
-//  change document from Example Group 1 to a document parameter passed in from previous menus
-        db.collection("groups").document(groupName).collection("Events")
+    public void updateCommonDates(){
+        //                  *****HANDLE EMPTY "DATESAVAILABLE" ARRAY CASE*****
+        db.collection("groups").document(groupName).collection("People")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful() && task.getResult() != null) {
+                            commonDates.clear();
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 Map<String, Object> data = document.getData();
-                                if(!(data.get("name").equals(""))) {
-                                    test.add(data.get("Date") + " : " +  data.get("name").toString() );
+                                if(data.get("DatesAvailable") != null) {
+                                    if (commonDates.size() == 0) {
+                                        commonDates.addAll((ArrayList<String>) data.get("DatesAvailable"));
+                                    }
+                                    else{
+                                        ArrayList<String> userDates = (ArrayList<String>) data.get("DatesAvailable");
+                                        HashSet<String> set = new HashSet<>(commonDates);
+                                        assert userDates != null;
+                                        set.retainAll(userDates);
+                                        commonDates.clear();
+                                        commonDates.addAll(set);
+                                    }
                                 }
-
                             }
-
                             updateCommonDatesListView();
                         }
                     }
                 });
     }
-
-//    public void updateCommonDates(){
-//        //                  *****HANDLE EMPTY "DATESAVAILABLE" ARRAY CASE*****
-//        //  change document from Example Group 1 to a document parameter passed in from previous menus
-//        db.collection("groups").document("Example Group 1").collection("People")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if(task.isSuccessful() && task.getResult() != null) {
-//                            commonDates.clear();
-//                            for(QueryDocumentSnapshot document: task.getResult()){
-//                                Map<String, Object> data = document.getData();
-//                                if(data.get("DatesAvailable") != null) {
-//                                    if (commonDates.size() == 0) {
-//                                        for (String date : (ArrayList<String>) data.get("DatesAvailable")){
-//                                            commonDates.add(date);
-//                                        }
-//                                    }
-//                                    else{
-//                                        ArrayList<String> userDates = (ArrayList<String>) data.get("DatesAvailable");
-//                                        HashSet<String> set = new HashSet<>();
-//                                        set.addAll(commonDates);
-//                                        set.retainAll(userDates);
-//                                        commonDates.clear();
-//                                        for(String date: set){
-//                                            commonDates.add(date);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
-//    }
 
     public void updateMessageListView(){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, messages);
@@ -251,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateCommonDatesListView(){
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, test);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, commonDates);
         commonDatesListView.setAdapter(arrayAdapter);
     }
 

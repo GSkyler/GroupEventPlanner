@@ -1,15 +1,14 @@
 package com.example.groupeventplanner;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
-import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.view.View;
+import android.os.Bundle;
+import android.view.WindowManager;
+import android.widget.CalendarView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,8 +16,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -31,8 +28,6 @@ public class CalendarActivity extends AppCompatActivity {
     private String Date;
     private String username = "TestUser";
     private String groupName = "Example Group 1";
-    private ArrayList<String> yourdates = new ArrayList<>();
-    private ListView yourdatesListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +42,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         calendar = findViewById(R.id.Cal);
-
-        yourdatesListView = findViewById(R.id.yourdatesListView);
-        Dates();
-
-
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
@@ -60,6 +50,7 @@ public class CalendarActivity extends AppCompatActivity {
                 updateDate();
             }
         });
+
     }
 
     // Adds a date Available
@@ -81,9 +72,9 @@ public class CalendarActivity extends AppCompatActivity {
                                 userRef.update("DatesAvailable", FieldValue.arrayUnion(Date));
                             }
                         }
-                        Dates();
                     }
                 });
+        //        userRef.update("DatesAvailable", FieldValue.arrayUnion(Date));
     }
 
     public void backToMain(View view){
@@ -91,37 +82,6 @@ public class CalendarActivity extends AppCompatActivity {
         String[] data = {username, groupName};
         intent.putExtra("data", data);
         startActivity(intent);
-    }
-
-
-    public void Dates(){
-        yourdates.clear();
-        db.collection("groups").document(groupName).collection("People").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful() && task.getResult() != null) {
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                Map<String, Object> data = document.getData();
-                                if((data.get("name").equals(username))) {
-                                    for (String date : (ArrayList<String>) data.get("DatesAvailable")){
-                                        yourdates.add(date);
-                                        System.out.println(date);
-                                    }
-                                }
-
-                            }
-
-                        }
-                        Datesout();
-                    }});
-
-    }
-
-    public void Datesout(){
-        System.out.println(yourdates);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.msgtextview, yourdates);
-        yourdatesListView.setAdapter(arrayAdapter);
     }
 
 
